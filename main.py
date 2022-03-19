@@ -1,5 +1,58 @@
 from pymongo import MongoClient
 
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+import re, nltk
+from nltk.corpus import stopwords
+from wordcloud import WordCloud
+import spacy
+import re
+
+nlp = spacy.load("en_core_web_sm")
+from nltk.stem import WordNetLemmatizer
+from tqdm import tqdm
+from gensim.models import Word2Vec
+from sklearn.manifold import TSNE
+import gensim
+from gensim import corpora
+from gensim.models.coherencemodel import CoherenceModel
+import matplotlib.colors as mcolors
+from collections import Counter
+from matplotlib.ticker import FuncFormatter
+from bokeh.plotting import figure, output_file, show
+from bokeh.models import Label
+from bokeh.io import output_notebook
+
+from sklearn.decomposition import NMF, LatentDirichletAllocation
+
+from IPython.display import display
+import pandas as pd
+
+df = pd.DataFrame(df)
+
+display(df)
+from collections import Counter
+import re
+import nltk
+from gensim.corpora import Dictionary
+
+from sklearn.preprocessing import LabelEncoder
+
+from gensim.models.ldamulticore import LdaMulticore
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.linear_model import LogisticRegression
+
+from sklearn.model_selection import GridSearchCV
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import base64
+import io
+sns.set()
+
 client = MongoClient(
     "mongodb://mongoadmin:xxxxxxxx@52.56.245.xx:xxxxx/?authSource=admin&readPreference=primary&ssl=false" --> #assume your own key to your database
 )
@@ -29,14 +82,14 @@ array = []
 for y in articles.find({}, {"_id": 1, "website": 1, "text": 1, "firm": 1}).limit(400):
     array.append(y)
 
-import pandas as pd
+
 
 list_dataframe = pd.DataFrame(arr)
 list_dataframe2 = pd.DataFrame(array)
 horizontal_stack = pd.concat([list_dataframe, list_dataframe2], axis=1)
 print(horizontal_stack)
 
-import numpy as np
+
 
 print(horizontal_stack["text"][0])
 
@@ -107,8 +160,6 @@ text = horizontal_stack.loc[:, "text"] = horizontal_stack.text.apply(
     lambda x: str.lower(x)
 )
 
-import re
-
 new = horizontal_stack.loc[:, "text"] = horizontal_stack.text.apply(
     lambda x: " ".join(re.findall("[\w]+", x))
 )
@@ -130,8 +181,6 @@ final = horizontal_stack.loc[:, "text"] = horizontal_stack.text.apply(
 )
 print(final[0])
 
-
-import nltk
 
 horizontal_stack["text"] = horizontal_stack["text"].str.replace("\d+", "")
 horizontal_stack["text"] = horizontal_stack["text"].str.strip()
@@ -170,9 +219,6 @@ tfidf = TfidfVectorizer(max_df=0.9, min_df=2, stop_words="english")
 
 dtm = tfidf.fit_transform(horizontal_stack["clean_string"])
 dtm
-
-
-from sklearn.decomposition import NMF, LatentDirichletAllocation
 
 
 nmf_model = NMF(n_components=10, random_state=42)
@@ -219,30 +265,6 @@ horizontal_stack["topic_label_NMF"] = horizontal_stack["NMF_Topic"].map(mytopic_
 horizontal_stack["topic_label_LDA"] = horizontal_stack["LDA_Topic"].map(mytopic_dict)
 horizontal_stack.head(-5)
 
-
-import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-import re, nltk
-from nltk.corpus import stopwords
-from wordcloud import WordCloud
-import spacy
-
-nlp = spacy.load("en_core_web_sm")
-from nltk.stem import WordNetLemmatizer
-from tqdm import tqdm
-from gensim.models import Word2Vec
-from sklearn.manifold import TSNE
-import gensim
-from gensim import corpora
-from gensim.models.coherencemodel import CoherenceModel
-import matplotlib.colors as mcolors
-from collections import Counter
-from matplotlib.ticker import FuncFormatter
-from bokeh.plotting import figure, output_file, show
-from bokeh.models import Label
-from bokeh.io import output_notebook
 
 sns.set_style("dark")
 graph = sns.catplot(
@@ -442,40 +464,6 @@ print(horizontal_stack["similar_words_embeddings9"])
 df = pd.concat([horizontal_stack, df_dominant_topic], axis=1)
 print(df)
 
-
-from IPython.display import display
-import pandas as pd
-
-df = pd.DataFrame(df)
-
-display(df)
-
-
-import pandas as pd
-import numpy as np
-from collections import Counter
-import re
-import nltk
-from gensim.corpora import Dictionary
-
-from sklearn.preprocessing import LabelEncoder
-
-from gensim.models.ldamulticore import LdaMulticore
-from gensim.models.word2vec import Word2Vec
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
-from sklearn.linear_model import LogisticRegression
-
-from sklearn.model_selection import GridSearchCV
-
-from IPython.display import display
-import seaborn as sns
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-import base64
-import io
-sns.set()
-
-
 print(df.shape)
 df.head(3)
 
@@ -631,7 +619,6 @@ def document_to_bow(df):
 document_to_bow(df)
 
 
-
 def lda_preprocessing(df):
     """ All the preprocessing steps for LDA are combined in this function.
     All mutations are done on the dataframe itself. So this function returns
@@ -653,7 +640,6 @@ cleansed_words_df.sort_values('count', ascending=False, inplace=True)
 ax = word_frequency_barplot(cleansed_words_df)
 ax.set_title("Document Frequencies (Number of documents a word appears in)", fontsize=16);
 
-import numpy as np
 df['Group']=df.Group.values
 print(df['Group'])
 df['Group'] = df['Group'].astype(str)
